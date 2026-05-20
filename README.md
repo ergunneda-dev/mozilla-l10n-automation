@@ -34,7 +34,8 @@ Mozilla maintains Firefox translations across 200+ locales via a unified GitHub 
 | [`github-actions-examples/`](./github-actions-examples) | Production-shape workflows: weekly report + per-PR placeable check |
 | [`GITHUB_TUTORIAL.md`](./GITHUB_TUTORIAL.md) | Step-by-step contributor flow: fork → branch → PR → Actions |
 | [`placeable-audit-2026-05-20.md`](./placeable-audit-2026-05-20.md) | Real-data analysis across 6 locales: three-category finding framework |
-| [`completeness-analysis-2026-05-20.md`](./completeness-analysis-2026-05-20.md) | Real-data analysis across all 156 locales: completion distribution |
+| [`completeness-analysis-2026-05-20.md`](./completeness-analysis-2026-05-20.md) | Real-data analysis across all 157 locales: completion distribution |
+| [`UPSTREAM_PR_PLAN.md`](./UPSTREAM_PR_PLAN.md) | Plan and candidates for a real upstream PR to mozilla-l10n |
 | [`l10n-completeness-2026-05-20.csv`](./l10n-completeness-2026-05-20.csv) | Raw CSV output that the completeness analysis was built from |
 
 ## Highlights from the real-data runs
