@@ -1,0 +1,63 @@
+# Weekly l10n completeness report
+#
+# What it does:
+#   - Runs every Monday at 06:00 UTC (and on-demand via the Actions tab).
+#   - Checks out THIS repo (which should contain the locale data, or at minimum
+#     the scripts) plus mozilla-l10n/firefox-l10n into a sibling directory.
+#   - Runs completeness_report.py and writes a CSV.
+#   - Uploads the CSV as a build artifact you can download from the run page.
+#
+# Where to put this file:
+#   .github/workflows/weekly-completeness.yml  (in the repo where the scripts live)
+#
+# To customize:
+#   - Change the cron schedule (line 19) — see crontab.guru for syntax.
+#   - Point at a different upstream repo if you're not targeting firefox-l10n.
+
+name: Weekly l10n completeness report
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC. crontab.guru/#0_6_*_*_1
+    - cron: "0 6 * * 1"
+  # Adds a "Run workflow" button in the Actions tab so you can trigger it manually.
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out scripts repo
+        uses: actions/checkout@v4
+        # By default checks out into $GITHUB_WORKSPACE — that's where our scripts/ dir is.
+
+      - name: Check out firefox-l10n into ./firefox-l10n
+        uses: actions/checkout@v4
+        with:
+          repository: mozilla-l10n/firefox-l10n
+          path: firefox-l10n
+          # Shallow clone — we only need the current state, not history.
+          # Big speed win on large repos.
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install fluent.syntax
+
+      - name: Run completeness report
+        run: |
+          python scripts/completeness_report.py \
+            firefox-l10n \
+            --out l10n-completeness-$(date +%Y-%m-%d).csv
+
+      - name: Upload CSV as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: l10n-completeness-report
+          path: "l10n-completeness-*.csv"
+          # Keep the last 12 weeks of reports.
+          retention-days: 90

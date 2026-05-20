@@ -1,0 +1,103 @@
+# Per-PR placeable check
+#
+# What it does:
+#   - On every PR, finds which top-level locale directories (e.g. tr/, de/, fr/)
+#     have changed .ftl files.
+#   - Runs check_placeables.py against each touched locale, comparing it to en-US.
+#   - If anything's off, posts a sticky comment on the PR with the findings
+#     AND fails the job (red ❌, so this can be set as a required check).
+#   - If everything looks clean, removes any previous sticky comment and passes.
+#
+# Where to put this file:
+#   .github/workflows/pr-placeable-check.yml
+#   IN THE LOCALIZATION REPO (e.g., a fork of firefox-l10n) — not the scripts repo,
+#   because the PR diff has to be in the same repo as the workflow.
+#
+# What this assumes:
+#   - The scripts/ directory exists at the repo root (or adjust the script path below).
+#   - en-US/ exists at the repo root as the source of truth.
+#
+# Heads-up on Pontoon: if Pontoon syncs commits into this repo, this workflow
+# will run against Pontoon-pushed PRs too. That's usually fine — but if you
+# get noise from auto-generated PRs, gate the trigger with `if:` conditions
+# on github.actor.
+
+name: Placeable check
+
+on:
+  pull_request:
+    # Only run when .ftl files are touched. Skips PRs that only edit docs/configs.
+    paths:
+      - "**/*.ftl"
+
+# Needed so the workflow can post + update PR comments.
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PR head with full history
+        uses: actions/checkout@v4
+        with:
+          # We need both the PR head and the base to compute the diff.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install fluent.syntax
+
+      - name: Detect changed locales
+        id: changed
+        run: |
+          # All .ftl files changed in this PR, relative to the base branch.
+          changed=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- '*.ftl')
+          echo "Changed .ftl files:"
+          echo "$changed"
+
+          # Extract the top-level directory of each path — that's the locale code.
+          # Skip en-US since it's the source.
+          locales=$(echo "$changed" | awk -F/ 'NF>1 && $1!="en-US" {print $1}' | sort -u | tr '\n' ' ')
+          echo "Affected locales: $locales"
+          # Pass to subsequent steps.
+          echo "locales=$locales" >> "$GITHUB_OUTPUT"
+
+      - name: Run placeable check per locale
+        id: run
+        if: steps.changed.outputs.locales != ''
+        run: |
+          set +e   # don't abort on first failure — collect output from all locales
+          : > report.txt
+          fail=0
+          for loc in ${{ steps.changed.outputs.locales }}; do
+            echo "=== $loc ===" | tee -a report.txt
+            python scripts/check_placeables.py en-US "$loc" 2>&1 | tee -a report.txt
+            rc=${PIPESTATUS[0]}
+            if [ "$rc" -ne 0 ]; then fail=1; fi
+          done
+          echo "fail=$fail" >> "$GITHUB_OUTPUT"
+
+      - name: Post sticky PR comment
+        if: steps.changed.outputs.locales != ''
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          # Same `header` across runs = the comment gets updated in place instead
+          # of a new comment per push. Cleaner PR history.
+          header: placeable-check
+          # If the check failed, post the report. If it passed, post a short OK.
+          # `recreate: true` removes the stale comment on success.
+          recreate: ${{ steps.run.outputs.fail == '0' }}
+          message: |
+            ${{ steps.run.outputs.fail == '0' && '✅ Placeable check passed for all changed locales.' || format('❌ Placeable check found issues. See the run log for full output:{0}{0}```{0}{1}{0}```', '\n', '(scroll up in the workflow log for details)') }}
+
+      - name: Fail the job if any locale had issues
+        if: steps.run.outputs.fail == '1'
+        run: |
+          echo "::error::Placeable mismatches detected. See the PR comment for details."
+          exit 1

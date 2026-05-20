@@ -1,0 +1,122 @@
+=== de ===
+
+[toolkit/toolkit/branding/accounts.ftl]
+  missing in translation: -fxaccount-brand-name  →  ['$capitalization']
+
+[toolkit/toolkit/neterror/netError.ftl]
+  missing in translation: fp-neterror-denied-port-access  →  ['-brand-short-name']
+
+## Summary: 2 placeable issue(s)
+=== fr ===
+
+[browser/browser/genai.ftl]
+  missing in translation: link-preview-reading-time  →  ['$rangePlural']
+
+[browser/browser/migrationWizard.ftl]
+  extra in translation:   migration-wizard-progress-success-bookmarks  →  ['$amount']
+
+[browser/browser/preferences/preferences.ftl]
+  missing in translation: history-remember-label  →  ['-brand-short-name']
+
+[toolkit/toolkit/neterror/netError.ftl]
+  missing in translation: certerror-what-should-i-do-bad-sts-cert-explanation  →  ['-brand-short-name']
+
+## Summary: 4 placeable issue(s)
+=== es-ES ===
+
+[toolkit/toolkit/branding/accounts.ftl]
+  missing in translation: -fxaccount-brand-name  →  ['$capitalization']
+
+## Summary: 1 placeable issue(s)
+=== ja ===
+
+[browser/browser/aboutLogins.ftl]
+  missing in translation: about-logins-confirm-remove-all-dialog-message  →  ['$count']
+
+[browser/browser/contextual-manager.ftl]
+  missing in translation: contextual-manager-passwords-remove-all-message  →  ['$total']
+  missing in translation: contextual-manager-passwords-delete-password-success-heading.heading  →  ['$total']
+  missing in translation: contextual-manager-view-alert-heading-2.heading  →  ['$count']
+  missing in translation: contextual-manager-view-alert-button-2.tooltiptext  →  ['$count']
+  missing in translation: contextual-manager-passwords-remove-all-passwords-checkbox  →  ['$total']
+
+[browser/browser/genai.ftl]
+  extra in translation:   genai-chatbot-summarize-sidebar-provider-subtitle  →  ['genai-menu-summarize-page']
+  extra in translation:   genai-chatbot-summarize-sidebar-generic-subtitle  →  ['genai-menu-summarize-page']
+  extra in translation:   genai-chatbot-summarize-footer-provider-subtitle  →  ['genai-menu-summarize-page']
+  missing in translation: link-preview-reading-time  →  ['$rangePlural']
+
+[browser/browser/newtab/asrouter.ftl]
+  extra in translation:   annotations-make-default-pdf-handler-subtitle  →  ['-brand-short-name']
+
+[browser/browser/places.ftl]
+  missing in translation: places-delete-folder.label  →  ['$count']
+  missing in translation: places-delete-page.label  →  ['$count']
+  missing in translation: places-delete-bookmark.label  →  ['$count']
+  missing in translation: places-create-bookmark.label  →  ['$count']
+
+[browser/browser/preferences/preferences.ftl]
+  missing in translation: do-not-track-option-default-content-blocking-known.label  →  ['-brand-short-name']
+  missing in translation: pane-experimental-title  →  ['-brand-short-name']
+
+[browser/browser/protections.ftl]
+  missing in translation: lockwise-scanned-text-no-breached-logins  →  ['$count']
+  missing in translation: info-known-breaches-resolved  →  ['$count']
+  missing in translation: info-exposed-passwords-resolved  →  ['$count']
+
+[browser/browser/tabContextMenu.ftl]
+  missing in translation: tab-context-reopen-closed-tabs.label  →  ['$tabCount']
+  missing in translation: tab-context-move-tabs.label  →  ['$tabCount']
+
+[browser/browser/tabbrowser.ftl]
+  missing in translation: tab-context-move-split-view-to-new-group.label  →  ['$splitViewCount']
+  missing in translation: tab-context-move-split-view-to-group.label  →  ['$splitViewCount']
+
+[browser/browser/toolbarContextMenu.ftl]
+  missing in translation: toolbar-context-menu-reopen-closed-tabs.label  →  ['$tabCount']
+
+[toolkit/toolkit/about/aboutReader.ftl]
+  missing in translation: about-reader-estimated-read-time  →  ['$rangePlural']
+
+[toolkit/toolkit/branding/accounts.ftl]
+  missing in translation: -fxaccount-brand-name  →  ['$capitalization']
+
+[toolkit/toolkit/downloads/downloadUtils.ftl]
+  missing in translation: download-utils-short-seconds  →  ['$timeValue']
+  missing in translation: download-utils-short-minutes  →  ['$timeValue']
+  missing in translation: download-utils-short-hours  →  ['$timeValue']
+  missing in translation: download-utils-short-days  →  ['$timeValue']
+
+[toolkit/toolkit/pdfviewer/viewer.ftl]
+  missing in translation: pdfjs-editor-comments-sidebar-title  →  ['$count']
+
+## Summary: 32 placeable issue(s)
+=== zh-CN ===
+
+[browser/browser/genai.ftl]
+  missing in translation: link-preview-reading-time  →  ['$rangePlural']
+
+[toolkit/toolkit/about/aboutReader.ftl]
+  missing in translation: about-reader-estimated-read-time  →  ['$rangePlural']
+
+[toolkit/toolkit/branding/accounts.ftl]
+  missing in translation: -fxaccount-brand-name  →  ['$capitalization']
+
+[toolkit/toolkit/downloads/downloadUtils.ftl]
+  missing in translation: download-utils-short-seconds  →  ['$timeValue']
+  missing in translation: download-utils-short-minutes  →  ['$timeValue']
+  missing in translation: download-utils-short-hours  →  ['$timeValue']
+  missing in translation: download-utils-short-days  →  ['$timeValue']
+
+[toolkit/toolkit/pdfviewer/viewer.ftl]
+  missing in translation: pdfjs-editor-comments-sidebar-title  →  ['$count']
+
+## Summary: 8 placeable issue(s)
+=== pt-BR ===
+
+[browser/browser/unifiedExtensions.ftl]
+  extra in translation:   unified-extensions-mb-blocklist-warning-multiple2.message  →  ['$extensionsCount']
+  extra in translation:   unified-extensions-mb-blocklist-warning-multiple.message  →  ['$extensionsCount']
+  extra in translation:   unified-extensions-mb-blocklist-error-multiple.message  →  ['$extensionsCount']
+
+## Summary: 3 placeable issue(s)
