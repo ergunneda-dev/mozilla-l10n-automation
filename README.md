@@ -2,7 +2,7 @@
 
 > Tools and analyses for Mozilla's localization repositories. Four Python scripts, two GitHub Actions, two real-data reports — a portfolio project exploring localization engineering at scale.
 
-May 2026 · [scripts](./scripts) · [contributor tutorial](./GITHUB_TUTORIAL.md) · [analyses](#highlights-from-the-real-data-runs)
+May 2026 · [scripts](./scripts) · [contributor tutorial](./GITHUB_TUTORIAL.md) · [analyses](#highlights-from-the-real-data-runs) · [mobile companion repo](https://github.com/ergunneda-dev/mozilla-mobile-l10n-automation)
 
 ---
 
@@ -62,6 +62,10 @@ There's also a [tiny sample-data fixture](./sample-data) (en-US + tr) with inten
 ## Related Mozilla tooling
 
 [`compare-locales`](https://hg.mozilla.org/l10n/compare-locales/) is what Mozilla's CI actually uses for production audits. The scripts here re-implement small slices of its parsing logic to make the primitives explicit and to learn the AST. For production, prefer `compare-locales` with the repo's `l10n.toml` config — it handles edge cases the scripts here don't.
+
+## See also
+
+[`ergunneda-dev/mozilla-mobile-l10n-automation`](https://github.com/ergunneda-dev/mozilla-mobile-l10n-automation) — the mobile companion to this repo. Same author, same three-category framework, applied to Android `strings.xml` and iOS XLIFF instead of Fluent. The cross-platform contrast (Android: 9 findings across 4 locales; iOS: 0 across 25) is itself the headline finding.
 
 ## License
 
