@@ -6,15 +6,6 @@ May 2026 · [scripts](./scripts) · [contributor tutorial](./GITHUB_TUTORIAL.md)
 
 ---
 
-## AI assistance disclosure
-
-This project was built collaboratively with **Claude (Anthropic)**. Roles were roughly:
-
-- **Me** (the human): project direction, ran the scripts against the real `firefox-l10n` repo, interpreted findings, made the judgment calls about which placeable divergences were bugs vs. intentional, identified the cross-locale patterns, framed the strategic categorizations.
-- **Claude**: drafted the Python code, scaffolded the contributor tutorial, structured the GitHub Actions YAML, helped shape the analysis documents.
-
-I've reviewed everything published here, can answer questions about how it works, and won't represent it as solo engineering work. The interesting parts are the *judgment* and the *patterns*, not the code volume — and those are mine.
-
 ## Why this exists
 
 Mozilla maintains Firefox translations across 200+ locales via a unified GitHub repo, [`mozilla-l10n/firefox-l10n`](https://github.com/mozilla-l10n/firefox-l10n). Production tooling exists (`compare-locales`, Pontoon), but day-to-day localization-program work involves repetitive audits: completeness checks, QA scans for missing placeables, bulk term renames across locales. This project automates the most common audits with three discipline principles:
