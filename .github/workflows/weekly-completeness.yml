@@ -1,26 +1,14 @@
 # Weekly l10n completeness report
 #
-# What it does:
-#   - Runs every Monday at 06:00 UTC (and on-demand via the Actions tab).
-#   - Checks out THIS repo (which should contain the locale data, or at minimum
-#     the scripts) plus mozilla-l10n/firefox-l10n into a sibling directory.
-#   - Runs completeness_report.py and writes a CSV.
-#   - Uploads the CSV as a build artifact you can download from the run page.
-#
-# Where to put this file:
-#   .github/workflows/weekly-completeness.yml  (in the repo where the scripts live)
-#
-# To customize:
-#   - Change the cron schedule (line 19) — see crontab.guru for syntax.
-#   - Point at a different upstream repo if you're not targeting firefox-l10n.
+# Clones firefox-l10n (translations) AND firefox-l10n-source (canonical en-US),
+# merges the latter into firefox-l10n/en-US/, then runs completeness_report.py.
+# Result: a CSV uploaded as a workflow artifact (downloadable from the run page).
 
 name: Weekly l10n completeness report
 
 on:
   schedule:
-    # Every Monday at 06:00 UTC. crontab.guru/#0_6_*_*_1
-    - cron: "0 6 * * 1"
-  # Adds a "Run workflow" button in the Actions tab so you can trigger it manually.
+    - cron: "0 6 * * 1"  # Mondays at 06:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -29,35 +17,41 @@ jobs:
     steps:
       - name: Check out scripts repo
         uses: actions/checkout@v4
-        # By default checks out into $GITHUB_WORKSPACE — that's where our scripts/ dir is.
-
-      - name: Check out firefox-l10n into ./firefox-l10n
-        uses: actions/checkout@v4
-        with:
-          repository: mozilla-l10n/firefox-l10n
-          path: firefox-l10n
-          # Shallow clone — we only need the current state, not history.
-          # Big speed win on large repos.
-          fetch-depth: 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
+      - name: Install fluent.syntax
         run: pip install fluent.syntax
+
+      - name: Clone firefox-l10n (translations) into ./firefox-l10n
+        uses: actions/checkout@v4
+        with:
+          repository: mozilla-l10n/firefox-l10n
+          path: firefox-l10n
+          fetch-depth: 1
+
+      - name: Clone firefox-l10n-source (canonical en-US) into ./firefox-l10n-source
+        uses: actions/checkout@v4
+        with:
+          repository: mozilla-l10n/firefox-l10n-source
+          path: firefox-l10n-source
+          fetch-depth: 1
+
+      - name: Merge en-US source into firefox-l10n/en-US/
+        run: |
+          mkdir -p firefox-l10n/en-US
+          cp -r firefox-l10n-source/. firefox-l10n/en-US/
 
       - name: Run completeness report
         run: |
-          python scripts/completeness_report.py \
-            firefox-l10n \
-            --out l10n-completeness-$(date +%Y-%m-%d).csv
+          python scripts/completeness_report.py firefox-l10n --out report.csv
 
-      - name: Upload CSV as artifact
+      - name: Upload CSV
         uses: actions/upload-artifact@v4
         with:
-          name: l10n-completeness-report
-          path: "l10n-completeness-*.csv"
-          # Keep the last 12 weeks of reports.
-          retention-days: 90
+          name: completeness-report
+          path: report.csv
+          retention-days: 30
