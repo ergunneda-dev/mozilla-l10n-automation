@@ -22,7 +22,9 @@ Mozilla maintains Firefox translations across 200+ locales via a unified GitHub 
 | [`scripts/check_placeables.py`](./scripts/check_placeables.py) | Per-locale: variables/terms present in source but missing in translation |
 | [`scripts/bulk_rename.py`](./scripts/bulk_rename.py) | Safe brand-term find/replace across all locales (dry-run + `--apply`) |
 | [`scripts/completeness_report.py`](./scripts/completeness_report.py) | CSV of per-locale completion percentages across the whole repo |
-| [`github-actions-examples/`](./github-actions-examples) | Production-shape workflows: weekly report + per-PR placeable check |
+| [`.github/workflows/weekly-completeness.yml`](./.github/workflows/weekly-completeness.yml) | **Live CI** — runs every Monday 06:00 UTC. Clones firefox-l10n + firefox-l10n-source, runs completeness across all 157 locales, uploads CSV as artifact |
+| [`.github/workflows/pr-audit.yml`](./.github/workflows/pr-audit.yml) | **Live CI** — runs on every PR that touches scripts or workflows. Posts top/bottom 5 locales by completeness as a PR comment |
+| [`github-actions-examples/`](./github-actions-examples) | Workflow template (`pr-placeable-check.yml`) designed for installation in the upstream `mozilla-l10n/firefox-l10n` repo (not live on this portfolio) |
 | [`GITHUB_TUTORIAL.md`](./GITHUB_TUTORIAL.md) | Step-by-step contributor flow: fork → branch → PR → Actions |
 | [`placeable-audit-2026-05-20.md`](./placeable-audit-2026-05-20.md) | Real-data analysis across 6 locales: three-category finding framework |
 | [`completeness-analysis-2026-05-20.md`](./completeness-analysis-2026-05-20.md) | Real-data analysis across all 157 locales: completion distribution |
@@ -44,6 +46,15 @@ Mozilla maintains Firefox translations across 200+ locales via a unified GitHub 
 **Catalan at 78.93%.** Anomalous given other Romance locales sit at 99–100%. The kind of finding a program manager surfaces, prioritizes, and either fixes or escalates.
 
 [Full placeable analysis →](./placeable-audit-2026-05-20.md) · [Full completeness analysis →](./completeness-analysis-2026-05-20.md)
+
+## Live CI
+
+Two workflows actually run on this repo (not just example shapes):
+
+- **`weekly-completeness.yml`** — Monday cron. Clones `mozilla-l10n/firefox-l10n` + `mozilla-l10n/firefox-l10n-source` at run time, merges en-US source into place, runs `completeness_report.py` across all 157 locales. Uploads the CSV as a workflow artifact (downloadable from the run page).
+- **`pr-audit.yml`** — runs on every PR that touches `scripts/`, `.github/workflows/`, or `sample-data/`. Same clone-and-audit pattern, but posts a summary table (top/bottom 5 locales by completeness) as a comment on the PR.
+
+The workflow in `github-actions-examples/pr-placeable-check.yml` is different — it's a template designed for installation inside `mozilla-l10n/firefox-l10n`'s own `.github/workflows/`, where actual `.ftl` file PRs happen. Not active on this portfolio.
 
 ## Run it yourself
 
