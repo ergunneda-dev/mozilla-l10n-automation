@@ -68,24 +68,24 @@ jobs:
             echo "Real-data completeness run against all 157 locales of \`mozilla-l10n/firefox-l10n\` at PR time."
             echo ""
             total_locales=$(($(wc -l < pr-report.csv) - 1))
-            at_100=$(awk -F, 'NR>1 && $6==100 {c++} END {print c+0}' pr-report.csv)
+            at_100=$(awk -F, 'NR>1 && $7==100 {c++} END {print c+0}' pr-report.csv)
             echo "**Summary:** $total_locales locales scanned, **$at_100** at 100% completeness."
             echo ""
             echo "### Top 5 most-complete (excluding 100%)"
             echo "| Locale | % | Translated | Missing | Empty |"
             echo "|---|---|---|---|---|"
-            awk -F, 'NR>1 && $6<100 {print $0}' pr-report.csv \
-              | sort -t, -k6,6 -nr \
+            awk -F, 'NR>1 && $7<100 {print $0}' pr-report.csv \
+              | sort -t, -k7,7 -nr \
               | head -5 \
-              | awk -F, '{printf "| %s | %.2f%% | %d | %d | %d |\n", $1, $6, $3, $4, $5}'
+              | awk -F, '{printf "| %s | %.2f%% | %d | %d | %d |\n", $1, $7, $3, $4, $5}'
             echo ""
             echo "### Bottom 5 (excluding 0%)"
             echo "| Locale | % | Translated | Missing | Empty |"
             echo "|---|---|---|---|---|"
-            awk -F, 'NR>1 && $6>0 {print $0}' pr-report.csv \
-              | sort -t, -k6,6 -n \
+            awk -F, 'NR>1 && $7>0 {print $0}' pr-report.csv \
+              | sort -t, -k7,7 -n \
               | head -5 \
-              | awk -F, '{printf "| %s | %.2f%% | %d | %d | %d |\n", $1, $6, $3, $4, $5}'
+              | awk -F, '{printf "| %s | %.2f%% | %d | %d | %d |\n", $1, $7, $3, $4, $5}'
             echo ""
             echo "_Reproduces the methodology of [completeness-analysis-2026-05-20.md](../blob/main/completeness-analysis-2026-05-20.md). Compare against that baseline to see what's drifted._"
           } > pr-comment.md
