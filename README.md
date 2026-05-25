@@ -33,7 +33,7 @@ Mozilla maintains Firefox translations across 200+ locales via a unified GitHub 
 
 ## Highlights from the real-data runs
 
-**The three categories every placeable finding falls into.** Distinguishing them is the actual skill — running the script is the easy part.
+**The three categories every placeable finding falls into.** 
 
 1. **Deliberate simplifications.** Example: `-fxaccount-brand-name` has a `$capitalization` selector in en-US (`[sentence]` / `[title]`). Five+ locales (tr, de, es-ES, ja, zh-CN) dropped it because their languages don't need the English-style capitalization distinction. *Not bugs.*
 2. **Latent runtime UI bugs.** Example: Japanese password-manager messages missing `$count` placeables. At runtime, Firefox passes a number expecting substitution; the translation has no slot for it; users see a sentence with no number. *File as bugs.*
